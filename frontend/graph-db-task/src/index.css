@@ -1,0 +1,44 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add this to your CSS file */
+
+.modal-transition {
+    opacity: 0;
+    transition: opacity 300ms ease-in-out;
+}
+
+.modal-transition-enter {
+    opacity: 0;
+}
+
+.modal-transition-enter-active {
+    opacity: 1;
+}
+
+.modal-transition-exit {
+    opacity: 1;
+}
+
+.modal-transition-exit-active {
+    opacity: 0;
+}
+
+.modal-content-enter {
+    transform: translateX(-100%);
+}
+
+.modal-content-enter-active {
+    transform: translateX(0);
+    transition: transform 300ms ease-in-out;
+}
+
+.modal-content-exit {
+    transform: translateX(0);
+}
+
+.modal-content-exit-active {
+    transform: translateX(100%);
+    transition: transform 300ms ease-in-out;
+}
