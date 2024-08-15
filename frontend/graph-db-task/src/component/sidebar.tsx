@@ -16,8 +16,9 @@ const Sidebar: React.FC = () => {
 
   const menuItems = [
     { name: "설정", path: "/settings", icon: settingIcon },
-    { name: "데이터 업로드", path: "/data-upload", icon: downloadIcon },
     { name: "Namespace", path: "/namespace", icon: namespaceIcon },
+    { name: "데이터 업로드", path: "/data-upload", icon: downloadIcon },
+
     { name: "SPARQL", path: "/sparql", icon: bulbIcon },
     { name: "통계", path: "/statistics", icon: volumeIcon },
     { name: "그래프 탐색", path: "/graph-explore", icon: shareIcon },
