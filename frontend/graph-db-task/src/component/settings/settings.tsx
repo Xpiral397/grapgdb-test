@@ -39,7 +39,21 @@ export function Settings() {
         </div>
       </Modal>
 
-      {db < 1 ? <NoContent /> : <Content />}
+      {db < 1 ? (
+        <NoContent
+          onNext={() => {
+            setCurrentStep("create");
+            openModal();
+          }}
+        />
+      ) : (
+        <Content
+          onNext={() => {
+            setCurrentStep("create");
+            openModal();
+          }}
+        />
+      )}
     </div>
   );
 }

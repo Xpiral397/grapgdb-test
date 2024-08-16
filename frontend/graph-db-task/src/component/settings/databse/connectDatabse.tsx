@@ -40,7 +40,10 @@ export default function ConnectDatabase() {
 
     try {
       // Replace with your API endpoint
-      const response = await axios.post("http://localhost:9999/api/database/create", requestData);
+      const response = await axios.post(
+        "http://localhost:9999/api/database/create",
+        requestData
+      );
 
       // Handle success
       setSuccess("Database created successfully!");
@@ -55,7 +58,7 @@ export default function ConnectDatabase() {
   };
 
   return (
-    <div className="container mx-auto p-4">
+    <div className="container p-4 mx-auto">
       <h1 className="font-[mulish] font-[700] text-[20px] mt-2 mb-4">
         Create a new Database
       </h1>
@@ -65,17 +68,17 @@ export default function ConnectDatabase() {
         입력하면, 이에 맞게 데이터베이스가 실행됩니다.
       </p>
 
-      <h2 className="text-xl font-bold mt-4">Required</h2>
+      <h2 className="mt-4 text-xl font-bold">Required</h2>
 
       <form onSubmit={handleSubmit}>
-        <div className="mt-4 relative flex space-x-5 items-center">
+        <div className="relative flex items-center mt-4 space-x-5">
           <label
             htmlFor="databaseType"
             className="block font-[Mulish] text-[16px] leading-[24px] font-[500]"
           >
             Database Type
           </label>
-          <div className="flex items-center space-x-4 relative">
+          <div className="relative flex items-center space-x-4">
             <select
               id="databaseType"
               value={selectedValue}
@@ -106,7 +109,7 @@ export default function ConnectDatabase() {
           </div>
         </div>
 
-        <div className="flex items-center space-x-3 mt-4">
+        <div className="flex items-center mt-4 space-x-3">
           <label
             htmlFor="ipAddress"
             className="block font-[Mulish] w-1/3 text-[16px] leading-[24px] font-[500]"
@@ -119,7 +122,7 @@ export default function ConnectDatabase() {
             type="text"
             value={ipAddress}
             onChange={(e) => setIpAddress(e.target.value)}
-            className="py-3 px-7 border focus:outline-none border-slate-700 rounded-lg w-2/3"
+            className="w-2/3 py-3 border rounded-lg px-7 focus:outline-none border-slate-700"
           />
         </div>
 
@@ -136,11 +139,11 @@ export default function ConnectDatabase() {
             type="number"
             value={port}
             onChange={(e) => setPort(e.target.value)}
-            className="py-3 px-7 border focus:outline-none border-slate-700 rounded-lg w-2/3"
+            className="w-2/3 py-3 border rounded-lg px-7 focus:outline-none border-slate-700"
           />
         </div>
 
-        <div className="flex items-center space-x-3 mt-4">
+        <div className="flex items-center mt-4 space-x-3">
           <label
             htmlFor="folderPath"
             className="block font-[Mulish] w-1/3 text-[16px] leading-[24px] font-[500]"
@@ -166,7 +169,7 @@ export default function ConnectDatabase() {
           </div>
         </div>
 
-        <div className="flex items-center space-x-3 mt-4">
+        <div className="flex items-center mt-4 space-x-3">
           <label
             htmlFor="minMemoryUsage"
             className="block font-[Mulish] w-1/3 text-[16px] leading-[24px] font-[500]"
@@ -179,11 +182,11 @@ export default function ConnectDatabase() {
             type="number"
             value={minMemoryUsage}
             onChange={(e) => setMinMemoryUsage(e.target.value)}
-            className="py-3 px-7 border focus:outline-none border-slate-700 rounded-lg w-2/3"
+            className="w-2/3 py-3 border rounded-lg px-7 focus:outline-none border-slate-700"
           />
         </div>
 
-        <div className="flex items-center space-x-3 mt-4">
+        <div className="flex items-center mt-4 space-x-3">
           <label
             htmlFor="maxMemoryUsage"
             className="block font-[Mulish] w-1/3 text-[16px] leading-[24px] font-[500]"
@@ -196,11 +199,11 @@ export default function ConnectDatabase() {
             type="number"
             value={maxMemoryUsage}
             onChange={(e) => setMaxMemoryUsage(e.target.value)}
-            className="py-3 px-7 border focus:outline-none border-slate-700 rounded-lg w-2/3"
+            className="w-2/3 py-3 border rounded-lg px-7 focus:outline-none border-slate-700"
           />
         </div>
 
-        <div className="mt-10 w-full flex items-center">
+        <div className="flex items-center w-full mt-10">
           <button
             type="submit"
             className="mt-6 bg-[#007EFF] text-white p-3 rounded-md mx-auto w-[246px] hover:bg-blue-600"
@@ -210,8 +213,8 @@ export default function ConnectDatabase() {
         </div>
 
         {/* Display success or error messages */}
-        {success && <p className="text-green-500 mt-4">{success}</p>}
-        {error && <p className="text-red-500 mt-4">{error}</p>}
+        {success && <p className="mt-4 text-green-500">{success}</p>}
+        {error && <p className="mt-4 text-red-500">{error}</p>}
       </form>
     </div>
   );

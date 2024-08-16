@@ -1,6 +1,6 @@
 import { IoAddCircleOutline } from "react-icons/io5";
 
-export function NoContent() {
+export function NoContent({ onNext }: any) {
   return (
     <div>
       <div className="line-clamp-3 leading-[18.7px] font-[400] p-3 w-full bg-white h-[189px] rounded-md border-[#E9EFF4] border-[1px] ">
@@ -13,6 +13,9 @@ export function NoContent() {
       <div className="flex items-center space-x-3 text-xl font-semibold font-Montserrat leading-7-24/3">
         <p>Repository</p>
         <IoAddCircleOutline
+          onClick={() => {
+            onNext();
+          }}
           className="text-gray-500 cursor-pointer"
           size={24}
         />

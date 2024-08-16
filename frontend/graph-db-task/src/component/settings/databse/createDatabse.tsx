@@ -34,11 +34,11 @@ export default function CreateDatabase({ onNext }: { onNext: () => void }) {
   };
 
   return (
-    <div className="container mx-auto p-2">
+    <div className="container p-2 mx-auto">
       <h1 className="text-[#25282B] font-[Mulish] font-[700] text-[16px] mt-2 mb-4">
         Create a new Database
       </h1>
-      <p className="text-slate-500 mb-6">
+      <p className="mb-6 text-slate-500">
         새로운 데이터베이스를 생성하기 위해 데이터베이스의 유형을 선택하고, 설치
         경로와 Port를 입력해주세요. 추가적으로 최소/최대 메모리 사용량을
         입력하면, 이에 맞게 데이터베이스가 실행됩니다.
@@ -48,14 +48,14 @@ export default function CreateDatabase({ onNext }: { onNext: () => void }) {
         <h2 className="text-[16px]  font-[Mulish] text-[#25282B] font-bold mt-1">
           Required
         </h2>
-        <div className="mt-2 relative flex space-x-5 items-center">
+        <div className="relative flex items-center mt-2 space-x-5">
           <label
             htmlFor="databaseType"
             className="block text-[#25282B] font-[Mulish] text-[16px] leading-[24px] font-[500]"
           >
             Database Type
           </label>
-          <div className="flex items-center space-x-4 relative">
+          <div className="relative flex items-center space-x-4">
             <select
               id="databaseType"
               value={selectedValue}
@@ -86,7 +86,7 @@ export default function CreateDatabase({ onNext }: { onNext: () => void }) {
           </div>
         </div>
 
-        <div className="flex items-center space-x-3 mt-4">
+        <div className="flex items-center mt-4 space-x-3">
           <label
             htmlFor="installationPath"
             className="block text-[#25282B] font-[Mulish] w-1/3 text-[16px] leading-[24px] font-[500]"
@@ -126,7 +126,7 @@ export default function CreateDatabase({ onNext }: { onNext: () => void }) {
               type="tell"
               value={port}
               onChange={(e) => setPort(e.target.value)}
-              className="py-3 px-7 border focus:outline-none border-slate-700 rounded-lg w-2/3"
+              className="w-2/3 py-3 border rounded-lg px-7 focus:outline-none border-slate-700"
             />
           </div>
         </div>
@@ -148,7 +148,7 @@ export default function CreateDatabase({ onNext }: { onNext: () => void }) {
               type="tell"
               value={minMemoryUsage}
               onChange={(e) => setMinMemoryUsage(e.target.value)}
-              className="py-3 px-7 border focus:outline-none border-slate-700 rounded-lg w-2/3"
+              className="w-2/3 py-3 border rounded-lg px-7 focus:outline-none border-slate-700"
             />
           </div>
         </div>
@@ -167,12 +167,12 @@ export default function CreateDatabase({ onNext }: { onNext: () => void }) {
               type="tell"
               value={maxMemoryUsage}
               onChange={(e) => setMaxMemoryUsage(e.target.value)}
-              className="py-3 px-7 border focus:outline-none border-slate-700 rounded-lg w-2/3"
+              className="w-2/3 py-3 border rounded-lg px-7 focus:outline-none border-slate-700"
             />
           </div>
         </div>
 
-        <div className="mt-10 w-full flex items-center">
+        <div className="flex items-center w-full mt-10">
           <button
             type="submit"
             onClick={() => onNext()}

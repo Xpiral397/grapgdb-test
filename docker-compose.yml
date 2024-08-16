@@ -2,16 +2,16 @@ version: "3.10"
 
 services:
   django:
-    build: ./backend
+    build: ./backend/graphdb_project
     ports:
-      - "8000:8000"
+      - "8889:9999"
     depends_on:
       - blazegraph
     environment:
       - BLAZEGRAPH_URL=http://blazegraph:8080/bigdata
 
   blazegraph:
-    image: blazegraph/blazegraph:latest
+    image: lyrasis/blazegraph:2.1.5
     ports:
       - "8080:8080"
     environment:
