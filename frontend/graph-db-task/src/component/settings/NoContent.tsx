@@ -14,7 +14,7 @@ export function NoContent({ onNext }: any) {
         <p>Repository</p>
         <IoAddCircleOutline
           onClick={() => {
-            onNext();
+            onNext("connect");
           }}
           className="text-gray-500 cursor-pointer"
           size={24}

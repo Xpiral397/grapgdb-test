@@ -1,65 +1,70 @@
+// ConnectDatabase.tsx
 import React, { useState } from "react";
-import axios from "axios";
 import { IoChevronDown } from "react-icons/io5";
+import { useAppContext } from "../../../context/appContext";
 
 export default function ConnectDatabase() {
   const database = ["Blazegraph", ""];
   const [selectedValue, setSelectedValue] = useState(database[0]);
   const [isOpen, setIsOpen] = useState(false);
   const [folderPath, setFolderPath] = useState("");
-  const [ipAddress, setIpAddress] = useState("");
-  const [port, setPort] = useState("");
-  const [minMemoryUsage, setMinMemoryUsage] = useState("");
-  const [maxMemoryUsage, setMaxMemoryUsage] = useState("");
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState<string | null>(null);
+  const [setFile] = useState<any>(null);
+  const { state, setState } = useAppContext(); // Use setState instead of dispatch
 
   const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     setSelectedValue(event.target.value);
     setIsOpen(false);
   };
 
+  const handleFileChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const selectedFile = event.target.files?.[0];
+    // console.log(selectedFile);
+    if (selectedFile) {
+      setFile(selectedFile);
+      extractLinksFromFile(selectedFile);
+    }
+  };
+
+  const extractLinksFromFile = async (file: File) => {
+    try {
+      const fileContent = await file.text();
+      const urlRegex = /rdf:resource="(http[s]?:\/\/[^\s"]+)"/g;
+      let match;
+      const newRepositories: any = [];
+
+      while ((match = urlRegex.exec(fileContent)) !== null) {
+        if ((match[1] && match[1].includes("8080")) || match.includes("9990")) {
+          newRepositories.push({ url: match[1] });
+        }
+      }
+
+      setState((prevState) => ({
+        ...prevState,
+        repositories: [...prevState.repositories, ...newRepositories],
+      }));
+    } catch (err) {
+      console.error("Failed to read the file. Please try again.");
+    }
+  };
+
   const handleFolderSelection = () => {
     // Simulate folder selection dialog
-    const selectedFolder = "C:/Program Files/BlazeDb"; // Replace with actual folder selection logic
+    const selectedFolder = "C:/Program Files/BlazeDb";
     setFolderPath(selectedFolder);
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    // Prepare data to send
-    const requestData = {
-      databaseType: selectedValue,
-      installationPath: folderPath,
-      ipAddress: ipAddress,
-      port: port,
-      minMemoryUsage: minMemoryUsage,
-      maxMemoryUsage: maxMemoryUsage,
-    };
-
-    try {
-      // Replace with your API endpoint
-      const response = await axios.post(
-        "http://localhost:9999/api/database/create",
-        requestData
-      );
-
-      // Handle success
-      setSuccess("Database created successfully!");
-      setError(null);
-      console.log(response.data);
-    } catch (err) {
-      // Handle error
-      setError("Failed to create database. Please try again.");
-      setSuccess(null);
-      console.error(err);
-    }
+    console.log({
+      selectedValue,
+      folderPath,
+      repositories: state.repositories,
+    });
   };
 
   return (
     <div className="container p-4 mx-auto">
-      <h1 className="font-[mulish] font-[700] text-[20px] mt-2 mb-4">
+      <h1 className="font-[Mulish] font-[700] text-[20px] mt-2 mb-4">
         Create a new Database
       </h1>
       <p className="text-slate-500">
@@ -111,55 +116,29 @@ export default function ConnectDatabase() {
 
         <div className="flex items-center mt-4 space-x-3">
           <label
-            htmlFor="ipAddress"
+            htmlFor="installationPath"
             className="block font-[Mulish] w-1/3 text-[16px] leading-[24px] font-[500]"
           >
             IP Address
           </label>
-          <input
-            id="ipAddress"
-            placeholder="127.0.0.1"
-            type="text"
-            value={ipAddress}
-            onChange={(e) => setIpAddress(e.target.value)}
-            className="w-2/3 py-3 border rounded-lg px-7 focus:outline-none border-slate-700"
-          />
-        </div>
-
-        <div className="w-[80%] flex items-center space-x-1 mt-4">
-          <label
-            htmlFor="port"
-            className="block font-[Mulish] w-1/4 text-[16px] leading-[24px] font-[500]"
-          >
-            Port
-          </label>
-          <input
-            id="port"
-            placeholder="9999"
-            type="number"
-            value={port}
-            onChange={(e) => setPort(e.target.value)}
-            className="w-2/3 py-3 border rounded-lg px-7 focus:outline-none border-slate-700"
-          />
-        </div>
-
-        <div className="flex items-center mt-4 space-x-3">
-          <label
-            htmlFor="folderPath"
-            className="block font-[Mulish] w-1/3 text-[16px] leading-[24px] font-[500]"
-          >
-            Installation Path
-          </label>
           <button
             type="button"
             onClick={handleFolderSelection}
-            className="ml-2 bg-[#007EFF] w-[250px] font-[Mulish] leading-6 font-[600] text-[16px] text-white px-5 py-3 rounded-[8px] hover:bg-blue-600"
+            className="ml-2 relative bg-[#007EFF] shadow-md shadow-blue-300 w-[250px] font-[Mulish] font-[500] leading-6 text-[16px] text-[#FFFFFF] px-5 py-3 rounded-[8px] hover:bg-blue-600"
           >
-            Choose Folder
+            <div className="absolute">
+              <input
+                type="file"
+                className="opacity-0 w-[250px]"
+                onChange={handleFileChange}
+                accept=".rdf"
+              />
+            </div>{" "}
+            Choose file
           </button>
           <div className="flex items-center w-full">
             <input
-              id="folderPath"
+              id="installationPath"
               placeholder="/home/ubuntu/data/address/"
               type="text"
               value={folderPath}
@@ -168,53 +147,33 @@ export default function ConnectDatabase() {
             />
           </div>
         </div>
-
-        <div className="flex items-center mt-4 space-x-3">
+        <div className="w-[80%] flex items-center space-x-1 mt-4">
           <label
-            htmlFor="minMemoryUsage"
-            className="block font-[Mulish] w-1/3 text-[16px] leading-[24px] font-[500]"
+            htmlFor="port"
+            className="block font-[Mulish] w-1/4 text-[16px] leading-[24px] font-[500]"
           >
-            Min Memory Usage
+            Port
           </label>
-          <input
-            id="minMemoryUsage"
-            placeholder="512"
-            type="number"
-            value={minMemoryUsage}
-            onChange={(e) => setMinMemoryUsage(e.target.value)}
-            className="w-2/3 py-3 border rounded-lg px-7 focus:outline-none border-slate-700"
-          />
+          <div className="flex items-center">
+            <input
+              id="port"
+              placeholder="999"
+              type="number"
+              value={folderPath}
+              readOnly
+              className="items-start w-2/3 py-3 border rounded-lg px-7 focus:outline-none focus-within:shadow-[0_0_0_2px_rgb(67,56,202)] border-slate-700"
+            />
+          </div>
         </div>
 
-        <div className="flex items-center mt-4 space-x-3">
-          <label
-            htmlFor="maxMemoryUsage"
-            className="block font-[Mulish] w-1/3 text-[16px] leading-[24px] font-[500]"
-          >
-            Max Memory Usage
-          </label>
-          <input
-            id="maxMemoryUsage"
-            placeholder="2048"
-            type="number"
-            value={maxMemoryUsage}
-            onChange={(e) => setMaxMemoryUsage(e.target.value)}
-            className="w-2/3 py-3 border rounded-lg px-7 focus:outline-none border-slate-700"
-          />
-        </div>
-
-        <div className="flex items-center w-full mt-10">
+        <div className="flex flex-col mx-auto w-[50%] mt-10">
           <button
             type="submit"
-            className="mt-6 bg-[#007EFF] text-white p-3 rounded-md mx-auto w-[246px] hover:bg-blue-600"
+            className="w-full bg-[#007EFF] text-[#FFFFFF] px-6 py-3 rounded-lg hover:bg-blue-600"
           >
             Create Database
           </button>
         </div>
-
-        {/* Display success or error messages */}
-        {success && <p className="mt-4 text-green-500">{success}</p>}
-        {error && <p className="mt-4 text-red-500">{error}</p>}
       </form>
     </div>
   );

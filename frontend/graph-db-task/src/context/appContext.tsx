@@ -1,73 +1,77 @@
-// AppContext.tsx
-import React, { createContext, useContext, useReducer, ReactNode } from "react";
+import React, { createContext, useContext, useState, ReactNode } from "react";
 
-// Define state type
-interface State {
-  repositories: Array<{ url: string }>;
-  basicInfo: {
-    dataType: string;
-    ipAddress: string;
-    port: string;
-    repositories: number;
-  };
-  additionalInfo: {
-    data: Array<{
-      queryStartCount: number;
-      queryErrorCount: number;
-      queryDoneCount: number;
-      queryPerSecond: number;
-      deadlineQueueSize: number;
-    }>;
-  };
+// Define types for state
+interface BasicInfo {
+  dataType: string;
+  ipAddress: string;
+  port: string;
+  repositories: number;
 }
 
-// Define action types
-type Action =
-  | { type: "SET_REPOSITORIES"; payload: Array<{ url: string }> }
-  | { type: "SET_BASIC_INFO"; payload: State["basicInfo"] }
-  | { type: "SET_ADDITIONAL_INFO"; payload: State["additionalInfo"] };
+interface AdditionalInfo {
+  data: Array<{
+    queryStartCount?: number;
+    queryErrorCount?: number;
+    queryDoneCount?: number;
+    queryPerSecond?: number;
+    deadlineQueueSize?: number;
+    operatorTasksPerQuery?: number;
+    operatorStartCount?: number;
+    operatorHaltCount?: number;
+    operatorActiveCount?: number;
+  }>;
+}
 
-// Initial state
-const initialState: State = {
-  repositories: [],
-  basicInfo: {
-    dataType: "",
-    ipAddress: "",
-    port: "",
-    repositories: 0,
-  },
-  additionalInfo: {
-    data: [],
-  },
-};
+interface AppState {
+  basicInfo: BasicInfo;
+  additionalInfo: AdditionalInfo;
+  repositories: Array<{ url: string }>;
+}
 
-// Reducer function
-const reducer = (state: State, action: Action): State => {
-  switch (action.type) {
-    case "SET_REPOSITORIES":
-      return { ...state, repositories: action.payload };
-    case "SET_BASIC_INFO":
-      return { ...state, basicInfo: action.payload };
-    case "SET_ADDITIONAL_INFO":
-      return { ...state, additionalInfo: action.payload };
-    default:
-      return state;
-  }
-};
+interface AppContextProps {
+  state: AppState;
+  setState: React.Dispatch<React.SetStateAction<AppState>>;
+}
 
 // Create context
-const AppContext = createContext<
-  { state: State; dispatch: React.Dispatch<Action> } | undefined
->(undefined);
+const AppContext = createContext<AppContextProps | undefined>(undefined);
 
 // Create provider component
 export const AppProvider: React.FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [state, dispatch] = useReducer(reducer, initialState);
+  const [state, setState] = useState<AppState>({
+    basicInfo: {
+      dataType: "Blazegraph",
+      ipAddress: "localhost",
+      port: "9999",
+      repositories: 1,
+    },
+    additionalInfo: {
+      data: [
+        {
+          queryStartCount: 1000,
+          queryErrorCount: 0,
+          queryDoneCount: 1008,
+          queryPerSecond: 1.0016972,
+          deadlineQueueSize: 0,
+        },
+        {
+          operatorTasksPerQuery: 1008,
+          operatorStartCount: 5344655,
+          operatorHaltCount: 5344655,
+          operatorActiveCount: 0,
+        },
+      ],
+    },
+    repositories: [
+      { url: "http://localhost:9999/blazegraph/namespace/kb/sparql" },
+      { url: "http://localhost:9999/blazegraph/namespace/kb/sparql" },
+    ],
+  });
 
   return (
-    <AppContext.Provider value={{ state, dispatch }}>
+    <AppContext.Provider value={{ state, setState }}>
       {children}
     </AppContext.Provider>
   );

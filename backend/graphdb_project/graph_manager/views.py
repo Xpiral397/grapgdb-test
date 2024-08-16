@@ -1,10 +1,4 @@
-from django.shortcuts import render, redirect
-from .services import create_namespace, upload_data
-from django.http import JsonResponse
-import requests
-from django.conf import settings
-from django.core.files.storage import default_storage
-from django.core.files.base import ContentFile
+import request
 
 
 def connect_database(request):

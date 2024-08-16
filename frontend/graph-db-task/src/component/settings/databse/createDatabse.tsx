@@ -16,14 +16,13 @@ export default function CreateDatabase({ onNext }: { onNext: () => void }) {
   };
 
   const handleFolderSelection = () => {
-    // Simulate folder selection dialog
-    const selectedFolder = "C:/Program Files/BlazerDb"; // Replace with actual folder selection logic
+    const selectedFolder = "C:/Program Files/BlazerDb";
     setFolderPath(selectedFolder);
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle form submission logic
+
     console.log({
       selectedValue,
       folderPath,
@@ -96,8 +95,11 @@ export default function CreateDatabase({ onNext }: { onNext: () => void }) {
           <button
             type="button"
             onClick={handleFolderSelection}
-            className="ml-2 bg-[#007EFF] shadow-md shadow-blue-300 w-[250px]  font-[Mulish] font-[500] leading-6  text-[16px] text-[#FFFFFF] px-5 py-3 rounded-[8px] hover:bg-blue-600"
+            className="ml-2 relative bg-[#007EFF] shadow-md shadow-blue-300 w-[250px]  font-[Mulish] font-[500] leading-6  text-[16px] text-[#FFFFFF] px-5 py-3 rounded-[8px] hover:bg-blue-600"
           >
+            <div className="absolute ">
+              <input type="file" className="opacity-0 w-[250px]" />
+            </div>{" "}
             Choose folder
           </button>
           <div className="flex items-center w-full">

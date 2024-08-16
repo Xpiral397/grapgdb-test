@@ -4,8 +4,7 @@ import { NoContent } from "./NoContent";
 import { Content } from "./Content";
 import ConnectDatabase from "./databse/connectDatabse";
 import CreateDatabase from "./databse/createDatabse";
-import Modal from "../modal"; // Ensure the correct import path for Modal
-
+import Modal from "../modal";
 export function Settings() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentStep, setCurrentStep] = useState("create"); // 'create' or 'connect'
@@ -41,15 +40,15 @@ export function Settings() {
 
       {db < 1 ? (
         <NoContent
-          onNext={() => {
-            setCurrentStep("create");
+          onNext={(arg: any) => {
+            setCurrentStep(arg);
             openModal();
           }}
         />
       ) : (
         <Content
-          onNext={() => {
-            setCurrentStep("create");
+          onNext={(arg: any) => {
+            setCurrentStep(arg);
             openModal();
           }}
         />
